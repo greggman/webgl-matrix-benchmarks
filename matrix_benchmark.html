@@ -907,6 +907,7 @@
           var benchmarkIndex, libraryIndex;
           benchmarkIndex = 0;
           var x_axis_tics = [];
+          var maxTime = 0;
           for (benchmark in testData) {
             benchmarks.push(benchmark);
             libraryIndex = 0;
@@ -918,7 +919,11 @@
                 datasets[libraryIndex]['lines'] = { show: true };
                 datasets[libraryIndex]['points'] = { show: true };
               }
-              datasets[libraryIndex]['data'].push([benchmarkIndex, testData[benchmark][library].avg]);
+              var avg = testData[benchmark][library].avg;
+              datasets[libraryIndex]['data'].push([benchmarkIndex, avg]);
+              if (avg && avg > maxTime) {
+                maxTime = avg;
+              }
               libraryIndex++;
             }
             benchmarkIndex++;
@@ -935,7 +940,7 @@
                 noTics: benchmarks.length,
                 min: 0, max: benchmarks.length - 1,
               },
-              yaxis:{ title: 'Time (ms)', min: 0, max: 50 },
+              yaxis:{ title: 'Time (ms)', min: 0, max: maxTime },
               title: "WebGL Matrix Library Benchmark",
               subtitle: "Averaged over 10 runs of 50,000 iterations.",
               grid:{ verticalLines: true, backgroundColor: 'white' },
