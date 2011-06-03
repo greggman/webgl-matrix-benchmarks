@@ -100,11 +100,11 @@
 					totalTime += time;
         }
 
-        var iterationsPerSecond = Math.floor(totalIterations / (totalTime * 0.001));
-				var minIterationsPerSecond = Math.floor(minIterations / (minTime * 0.001));
-				var maxIterationsPerSecond = Math.floor(maxIterations / (maxTime * 0.001));
+        var iterationsPerSecond = Math.floor(totalIterations / (totalTime * 0.001)) / 1000000;
+				var minIterationsPerSecond = Math.floor(minIterations / (minTime * 0.001)) / 1000000;
+				var maxIterationsPerSecond = Math.floor(maxIterations / (maxTime * 0.001)) / 1000000;
 
-        log('<i>' + library + '</i> - Avg: <b>' + iterationsPerSecond + ' iterations per second</b>, Min: ' + minIterationsPerSecond + ' iterations per second, Max: ' + maxIterationsPerSecond + ' iterations per second');
+        log('<i>' + library + '</i> - Avg: <b>' + iterationsPerSecond + 'mips</b>, Min: ' + minIterationsPerSecond + 'mips, Max: ' + maxIterationsPerSecond + 'mips');
 
         dataLogger[library] = { avg: iterationsPerSecond, min: minIterationsPerSecond, max: maxIterationsPerSecond };
 
@@ -291,7 +291,7 @@
       CanvasMatrix, <a href="http://code.google.com/p/ewgl-matrices/">EWGL_math</a>,
       <a href="http://code.google.com/p/threedlibrary/">tdl</a>, and
       <a href="http://closure-library.googlecode.com/">Google's Closure</a>.<br/>
-      Benchmarks test iterations per second of the target operation.<br/>
+      Benchmarks test millions of iterations per second of the target operation.<br/>
     </p>
     <div id="graph" style="width:900px;height:400px;margin:10px"></div>
     <div id="tablediv" style="font-size:85%;width:800px;margin:10px">
@@ -1176,7 +1176,7 @@
                 noTics: benchmarks.length,
                 min: 0, max: benchmarks.length - 1,
               },
-              yaxis:{ title: 'Iterations Per Second', min: 0, max: 10000000 },
+              yaxis:{ title: 'Millions of Iterations Per Second', min: 0, max: 10 },
               title: "WebGL Matrix Library Benchmark",
               subtitle: "Averaged over 10 runs (higher is better)",
               grid:{ verticalLines: true, backgroundColor: 'white' },
@@ -1190,7 +1190,7 @@
                 sensibility: 1, // => The smaller this value, the more precise you've to point
                 trackDecimals: 1,
                 trackFormatter: function(obj) {
-                  return obj.series.label + ':' + benchmarks[Number(obj.x)] +  ', ' + obj.y + 'ms'
+                  return obj.series.label + ':' + benchmarks[Number(obj.x)] +  ', ' + obj.y + 'mips'
                 }
               },
               crosshair:{ mode: 'xy' }
@@ -1255,7 +1255,7 @@
           for (var library in testData[benchmark]) {
             data = document.getElementById(benchmark + '_' + library_to_id(library) + '_data');
             value = testData[benchmark][library].avg;
-            data.textContent = value;
+            data.textContent = value ? value.toPrecision(2) : '';
             if (testData[benchmark][library].bad) {
               data.textContent += "(bad)";
               data.style.backgroundColor = '#fcc';
