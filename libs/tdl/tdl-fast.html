@@ -34,47 +34,47 @@
             var m1 = tdlFastMatrixRandom();
             var m2 = tdlFastMatrixRandom();
             var mat4 = tdl.fast.matrix4;
-            var start = Date.now();
+            var start = performance.now();
             var loopCount = 0;
-            while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
                 mat4.mul(m1, m2, m1);
               }
             }
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Translation':
           { test: function(count, maxCount, milliSeconds) {
             var m1 = tdlFastMatrixRandom();
             var v1 = new Float32Array([1, 2, 3]);
-            var start = Date.now();
+            var start = performance.now();
             var mat4 = tdl.fast.matrix4;
             var loopCount = 0;
-            while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
                 mat4.translate(m1, v1);
               }
             }
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Scaling':
           { test: function(count, maxCount, milliSeconds) {
             var m1 = tdlFastMatrixRandom();
             var v1 = new Float32Array([1, 2, 3]);
-            var start = Date.now();
+            var start = performance.now();
             var mat4 = tdl.fast.matrix4;
             var loopCount = 0;
-            while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
                 mat4.scale(m1, v1);
               }
             }
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Rotation (Arbitrary axis)':
@@ -84,15 +84,15 @@
             tdl.fast.normalize(v1, v1);
             var mat4 = tdl.fast.matrix4;
             var a = Math.PI/2;
-            var start = Date.now();
+            var start = performance.now();
             var loopCount = 0;
-            while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
                 mat4.axisRotate(m1, v1, a);
               }
             }
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Rotation (X axis)':
@@ -100,30 +100,30 @@
             var m1 = tdlFastMatrixRandom();
             var a = Math.PI/2;
             var mat4 = tdl.fast.matrix4;
-            var start = Date.now();
+            var start = performance.now();
             var loopCount = 0;
-            while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
                 mat4.rotateX(m1, a);
               }
             }
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Transpose':
           { test: function(count, maxCount, milliSeconds) {
             var m1 = tdlFastMatrixRandom();
             var mat4 = tdl.fast.matrix4;
-            var start = Date.now();
+            var start = performance.now();
             var loopCount = 0;
-            while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
                 mat4.transpose(m1, m1);
               }
             }
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Inverse':
@@ -131,15 +131,15 @@
             var m1 = tdlFastMatrixRandom();
             var mat4 = tdl.fast.matrix4;
             mat4.perspective(m1, Math.PI/2, 0.5, 1, 1000);
-            var start = Date.now();
+            var start = performance.now();
             var loopCount = 0;
-            while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
                 mat4.inverse(m1, m1);
               }
             }
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Vector Transformation':

@@ -9,49 +9,50 @@
     <script type="text/javascript" src="../../js/rand.js"></script>
 
     <!-- Matrix Libraries -->
-    <script type="text/javascript" src="gl-matrix.js"></script>
+    <script type="text/javascript" src="twgl-full.min.js"></script>
 
     <!-- Benchmarking utilities -->
     <script type="text/javascript" src="../../js/test-helper.js"></script>
     <script type="text/javascript">
-
+      var m4 = twgl.m4;
+      var v3 = twgl.v3;
       window.onload = TestHelper.main;
 
-      function glMatrixRandom() {
-        var m = mat4.create();
-        var axis = vec3.clone([pseudoRandom(), pseudoRandom(), pseudoRandom()]);
-        vec3.normalize(axis, axis);
-        mat4.rotate(m, m, pseudoRandom(), axis);
-        mat4.translate(m, m, [pseudoRandom(), pseudoRandom(), pseudoRandom()]);
+      function twglMatrixRandom() {
+        var m = new Float32Array(16);
+        var axis = v3.normalize([pseudoRandom(), pseudoRandom(), pseudoRandom()]);
+        m4.identity(m);
+        m4.axisRotate(m, axis, pseudoRandom(), m);
+        m4.translate(m, [pseudoRandom(), pseudoRandom(), pseudoRandom()], m);
         return m;
       }
 
       var tests = {
         'Multiplication':
           { test: function(count, maxCount, milliSeconds) {
-            var m1 = glMatrixRandom();
-            var m2 = glMatrixRandom();
+            var m1 = twglMatrixRandom();
+            var m2 = twglMatrixRandom();
             var start = performance.now();
             var loopCount = 0;
             while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
-                mat4.multiply(m1, m1, m2);
+                m4.multiply(m2, m1, m1);
               }
             }
-            return {time: performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Translation':
           { test: function(count, maxCount, milliSeconds) {
-            var m1 = glMatrixRandom();
-            var v1 = vec3.clone([1, 2, 3]);
+            var m1 = twglMatrixRandom();
+            var v1 = new Float32Array([1, 2, 3]);
             var start = performance.now();
             var loopCount = 0;
             while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
-                mat4.translate(m1, m1, v1);
+                m4.translate(m1, v1, m1);
               }
             }
             return {time:performance.now()-start, loopCount: loopCount, result: m1};
@@ -59,14 +60,14 @@
 
         'Scaling':
           { test: function(count, maxCount, milliSeconds) {
-            var m1 = glMatrixRandom();
-            var v1 = vec3.clone([1, 2, 3]);
+            var m1 = twglMatrixRandom();
+            var v1 = new Float32Array([1, 2, 3]);
             var start = performance.now();
             var loopCount = 0;
             while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
-                mat4.scale(m1, m1, v1);
+                m4.scale(m1, v1, m1);
               }
             }
             return {time:performance.now()-start, loopCount: loopCount, result: m1};
@@ -74,15 +75,16 @@
 
         'Rotation (Arbitrary axis)':
           { test: function(count, maxCount, milliSeconds) {
-            var m1 = glMatrixRandom();
-            var v1 = vec3.clone([1, 2, 3]);
+            var m1 = twglMatrixRandom();
+            var v1 = new Float32Array([1, 2, 3]);
+            v3.normalize(v1, v1, v1);
             var a = Math.PI/2;
             var start = performance.now();
             var loopCount = 0;
             while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
-                mat4.rotate(m1, m1, a, v1);
+                m4.axisRotate(m1, v1, a, m1);
               }
             }
             return {time:performance.now()-start, loopCount: loopCount, result: m1};
@@ -90,14 +92,14 @@
 
         'Rotation (X axis)':
           { test: function(count, maxCount, milliSeconds) {
-            var m1 = glMatrixRandom();
+            var m1 = twglMatrixRandom();
             var a = Math.PI/2;
             var start = performance.now();
             var loopCount = 0;
             while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
-                mat4.rotateX(m1, m1, a);
+                m4.rotateX(m1, a, m1);
               }
             }
             return {time:performance.now()-start, loopCount: loopCount, result: m1};
@@ -105,13 +107,13 @@
 
         'Transpose':
           { test: function(count, maxCount, milliSeconds) {
-            var m1 = glMatrixRandom();
+            var m1 = twglMatrixRandom();
             var start = performance.now();
             var loopCount = 0;
             while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
-                mat4.transpose(m1, m1);
+                m4.transpose(m1, m1);
               }
             }
             return {time:performance.now()-start, loopCount: loopCount, result: m1};
@@ -119,23 +121,20 @@
 
         'Inverse':
           { test: function(count, maxCount, milliSeconds) {
-            var m1 = mat4.perspective(mat4.create(), Math.PI/2, 0.5, 1, 1000);
+            var m1 = m4.perspective(Math.PI/2, 0.5, 1, 1000);
             var start = performance.now();
             var loopCount = 0;
             while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
-                mat4.invert(m1, m1);
+                m4.inverse(m1, m1);
               }
             }
             return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
-        'Inverse 3x3':
-          { test: null },
-
         'Vector Transformation':
-          { test: null}
+          { test: null }
 
       };
 

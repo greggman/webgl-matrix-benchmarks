@@ -34,15 +34,15 @@
             var m1 = closureMatrixRandom();
             var m2 = closureMatrixRandom();
             var mat4 = goog.vec.Matrix4;
-            var start = Date.now();
+            var start = performance.now();
 						var loopCount = 0;
-						while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+						while (performance.now() - start < milliSeconds && loopCount != maxCount) {
 							++loopCount;
 							for (var i = 0; i < count; ++i) {
 								mat4.multMat(m1, m2, m1);
 							}
 						}
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Translation':
@@ -50,15 +50,15 @@
             var m1 = closureMatrixRandom();
             var v1 = goog.vec.Vec3.createFromValues(1, 2, 3);
             var mat4 = goog.vec.Matrix4;
-            var start = Date.now();
+            var start = performance.now();
 						var loopCount = 0;
-						while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+						while (performance.now() - start < milliSeconds && loopCount != maxCount) {
 							++loopCount;
 							for (var i = 0; i < count; ++i) {
 								mat4.applyTranslate(m1, v1[0], v1[1], v1[2]);
 							}
 						}
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Scaling':
@@ -66,15 +66,15 @@
             var m1 = closureMatrixRandom();
             var v1 = goog.vec.Vec3.createFromValues(1, 2, 3);
             var mat4 = goog.vec.Matrix4;
-            var start = Date.now();
+            var start = performance.now();
 						var loopCount = 0;
-						while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+						while (performance.now() - start < milliSeconds && loopCount != maxCount) {
 							++loopCount;
 							for (var i = 0; i < count; ++i) {
 								mat4.applyScale(m1, v1[0], v1[1], v1[2]);
 							}
 						}
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Rotation (Arbitrary axis)':
@@ -84,15 +84,15 @@
             goog.vec.Vec3.normalize(v1, v1);
             var mat4 = goog.vec.Matrix4;
             var a = Math.PI/2;
-            var start = Date.now();
+            var start = performance.now();
 						var loopCount = 0;
-						while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+						while (performance.now() - start < milliSeconds && loopCount != maxCount) {
 							++loopCount;
 							for (var i = 0; i < count; ++i) {
 								mat4.applyRotate(m1, a, v1[0], v1[1], v1[2]);
 							}
 						}
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Rotation (X axis)':
@@ -101,30 +101,30 @@
             var v1 = goog.vec.Vec3.createFromValues(1, 0, 0);
             var mat4 = goog.vec.Matrix4;
             var a = Math.PI/2;
-            var start = Date.now();
+            var start = performance.now();
 						var loopCount = 0;
-						while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+						while (performance.now() - start < milliSeconds && loopCount != maxCount) {
 							++loopCount;
 							for (var i = 0; i < count; ++i) {
 								mat4.applyRotate(m1, a, v1[0], v1[1], v1[2]);
 							}
 						}
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Transpose':
           { test: function(count, maxCount, milliSeconds) {
             var m1 = closureMatrixRandom();
             var mat4 = goog.vec.Matrix4;
-            var start = Date.now();
+            var start = performance.now();
 						var loopCount = 0;
-						while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+						while (performance.now() - start < milliSeconds && loopCount != maxCount) {
 							++loopCount;
 							for (var i = 0; i < count; ++i) {
 								mat4.transpose(m1, m1);
 							}
 						}
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Inverse':
@@ -132,15 +132,15 @@
             var m1 = closureMatrixRandom();
             var mat4 = goog.vec.Matrix4;
             mat4.makePerspective(m1, Math.PI/2, 0.5, 1, 1000);
-            var start = Date.now();
+            var start = performance.now();
 						var loopCount = 0;
-						while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+						while (performance.now() - start < milliSeconds && loopCount != maxCount) {
 							++loopCount;
 							for (var i = 0; i < count; ++i) {
 								mat4.invert(m1, m1);
 							}
 						}
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Inverse 3x3':
@@ -151,9 +151,9 @@
                 m1[4], m1[5], m1[7],
                 m1[8], m1[9], m1[10]);
             var mat3 = goog.vec.Matrix3;
-            var start = Date.now();
+            var start = performance.now();
 						var loopCount = 0;
-						while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+						while (performance.now() - start < milliSeconds && loopCount != maxCount) {
 							++loopCount;
 							for (var i = 0; i < count; ++i) {
 								mat3.invert(m1, m1);
@@ -164,7 +164,7 @@
                 m1[3], m1[4], m1[5], 0,
                 m1[6], m1[7], m1[8], 0,
                 0, 0, 0, 1);
-            return {time:Date.now()-start, loopCount: loopCount, result: m2};
+            return {time:performance.now()-start, loopCount: loopCount, result: m2};
           }},
 
         'Vector Transformation':
@@ -172,15 +172,15 @@
             var m1 = closureMatrixRandom();
             var v1 = goog.vec.Vec3.createFromValues(1, 2, 3);
             var mat4 = goog.vec.Matrix4;
-            var start = Date.now();
+            var start = performance.now();
 						var loopCount = 0;
-						while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+						while (performance.now() - start < milliSeconds && loopCount != maxCount) {
 							++loopCount;
 							for (var i = 0; i < count; ++i) {
 								mat4.multVec3Projective(m1, v1, v1);
 							}
 						}
-            return {time:Date.now()-start, loopCount: loopCount, result: v1};
+            return {time:performance.now()-start, loopCount: loopCount, result: v1};
           }}
       };
 

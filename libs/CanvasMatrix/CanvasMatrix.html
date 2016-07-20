@@ -54,108 +54,108 @@
           { test: function(count, maxCount, milliSeconds) {
             var m1 = canvasMatrixRandom();
             var m2 = canvasMatrixRandom();
-            var start = Date.now();
+            var start = performance.now();
             var loopCount = 0;
-            while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
                 m1.multLeft(m2);
               }
             }
-            return {time: Date.now()-start, loopCount: loopCount, result: m1};
+            return {time: performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Translation':
           { test: function(count, maxCount, milliSeconds) {
             var m1 = new CanvasMatrix4();
             var m2 = canvasMatrixRandom();
-            var start = Date.now();
+            var start = performance.now();
             var loopCount = 0;
-            while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
                 m1.translate(1, 2, 3);
               }
             }
             m1.multRight(m2);
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Scaling':
           { test: function(count, maxCount, milliSeconds) {
             var m1 = new CanvasMatrix4();
             var m2 = canvasMatrixRandom();
-            var start = Date.now();
+            var start = performance.now();
             var loopCount = 0;
-            while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
                 m1.scale(1, 2, 3);
               }
             }
             m1.multRight(m2);
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Rotation (Arbitrary axis)':
           { test: function(count, maxCount, milliSeconds) {
             var m1 = new CanvasMatrix4();
             var m2 = canvasMatrixRandom();
-            var start = Date.now();
+            var start = performance.now();
             var loopCount = 0;
-            while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
                 m1.rotate(90, 1, 2, 3);
               }
             }
             m1.multRight(m2);
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Rotation (X axis)':
           { test: function(count, maxCount, milliSeconds) {
             var m1 = new CanvasMatrix4();
             var m2 = canvasMatrixRandom();
-            var start = Date.now();
+            var start = performance.now();
             var loopCount = 0;
-            while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
                 m1.rotate(90, 1, 0, 0);
               }
             }
             m1.multRight(m2);
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Transpose':
           { test: function(count, maxCount, milliSeconds) {
             var m1 = canvasMatrixRandom();
-            var start = Date.now();
+            var start = performance.now();
             var loopCount = 0;
-            while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
                 m1.transpose();
               }
             }
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Inverse':
           { test: function(count, maxCount, milliSeconds) {
             var m1 = new CanvasMatrix4();
             m1.perspective(90, 0.5, 1, 1000);
-            var start = Date.now();
+            var start = performance.now();
             var loopCount = 0;
-            while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
                 m1.invert();
               }
             }
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Inverse 3x3':

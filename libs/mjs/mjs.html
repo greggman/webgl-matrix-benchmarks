@@ -29,45 +29,45 @@
           { test: function(count, maxCount, milliSeconds) {
             var m1 = mjsRandom();
             var m2 = mjsRandom();
-            var start = Date.now();
+            var start = performance.now();
 						var loopCount = 0;
-						while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+						while (performance.now() - start < milliSeconds && loopCount != maxCount) {
 							++loopCount;
 							for (var i = 0; i < count; ++i) {
 								M4x4.mul(m1, m2, m1);
 							}
 						}
-            return {time: Date.now()-start, loopCount: loopCount, result: m1};
+            return {time: performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Translation':
           { test: function(count, maxCount, milliSeconds) {
             var m1 = mjsRandom();
             var v1 = V3.$(1, 2, 3);
-            var start = Date.now();
+            var start = performance.now();
 						var loopCount = 0;
-						while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+						while (performance.now() - start < milliSeconds && loopCount != maxCount) {
 							++loopCount;
 							for (var i = 0; i < count; ++i) {
 								M4x4.translate(v1, m1, m1);
 							}
 						}
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Scaling':
           { test: function(count, maxCount, milliSeconds) {
             var m1 = mjsRandom();
             var v1 = V3.$(1, 2, 3);
-            var start = Date.now();
+            var start = performance.now();
 						var loopCount = 0;
-						while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+						while (performance.now() - start < milliSeconds && loopCount != maxCount) {
 							++loopCount;
 							for (var i = 0; i < count; ++i) {
 								M4x4.scale(v1, m1, m1);
 							}
 						}
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Rotation (Arbitrary axis)':
@@ -75,15 +75,15 @@
             var m1 = mjsRandom();
             var v1 = V3.$(1, 2, 3);
             var a = Math.PI/2;
-            var start = Date.now();
+            var start = performance.now();
 						var loopCount = 0;
-						while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+						while (performance.now() - start < milliSeconds && loopCount != maxCount) {
 							++loopCount;
 							for (var i = 0; i < count; ++i) {
 								M4x4.rotate(a, v1, m1, m1);
 							}
 						}
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Rotation (X axis)':
@@ -91,52 +91,52 @@
             var m1 = mjsRandom();
             var v1 = V3.$(1, 0, 0);
             var a = Math.PI/2;
-            var start = Date.now();
+            var start = performance.now();
 						var loopCount = 0;
-						while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+						while (performance.now() - start < milliSeconds && loopCount != maxCount) {
 							++loopCount;
 							for (var i = 0; i < count; ++i) {
 								M4x4.rotate(a, v1, m1, m1);
 							}
 						}
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Transpose':
           { test: function(count, maxCount, milliSeconds) {
             var m1 = mjsRandom();
-            var start = Date.now();
+            var start = performance.now();
 						var loopCount = 0;
-						while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+						while (performance.now() - start < milliSeconds && loopCount != maxCount) {
 							++loopCount;
 							for (var i = 0; i < count; ++i) {
 								M4x4.transpose(m1, m1);
 							}
 						}
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Inverse':
           { test: function(count, maxCount, milliSeconds) {
            var m1 = M4x4.makePerspective(90, 0.5, 1, 1000);
-           var start = Date.now();
+           var start = performance.now();
 					 var loopCount = 0;
-					 while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+					 while (performance.now() - start < milliSeconds && loopCount != maxCount) {
 						 ++loopCount;
 						 for (var i = 0; i < count; ++i) {
 							 M4x4.inverseOrthonormal(m1, m1);
 						 }
 					 }
-           return {time:Date.now()-start, loopCount: loopCount, result: m1};
+           return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Inverse 3x3':
           { test: function(count, maxCount, milliSeconds) {
             var m1 = mjsRandom();
             var res = new MJS_FLOAT_ARRAY_TYPE(9);
-            var start = Date.now();
+            var start = performance.now();
 						var loopCount = 0;
-						while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+						while (performance.now() - start < milliSeconds && loopCount != maxCount) {
 							++loopCount;
 							for (var i = 0; i < count; ++i) {
 								M4x4.inverseTo3x3(m1, res);
@@ -158,7 +158,7 @@
 								m1[15] = 1;
 							}
 						}
-            return {time:Date.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
         'Vector Transformation':
@@ -166,9 +166,9 @@
             var m1 = mjsRandom();
             var v1 = V3.$(1, 2, 3);
             var v2 = V3.$();
-            var start = Date.now();
+            var start = performance.now();
 						var loopCount = 0;
-						while (Date.now() - start < milliSeconds && loopCount != maxCount) {
+						while (performance.now() - start < milliSeconds && loopCount != maxCount) {
 							++loopCount;
 							for (var i = 0; i < count; ++i) {
 								V3.mul4x4(m1, v1, v2);
@@ -177,7 +177,7 @@
 								v2 = t;
 							}
 						}
-            return {time:Date.now()-start, loopCount: loopCount, result: v1};
+            return {time:performance.now()-start, loopCount: loopCount, result: v1};
           }}
 
       };

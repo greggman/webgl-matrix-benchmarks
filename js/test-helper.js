@@ -85,7 +85,7 @@ function runTests(tests) {
       if (data.avg === null) {
         log('<i>' + testName + ' Unsupported</i>');
       } else {
-        log('<i>' + label + '</i> - Avg: <b>' + data.avg + ' iterations per second</b>, Min: ' + data.min + ' iterations per second, Max: ' + data.max + ' iterations per second');
+        log('<i>' + testName + '</i> - Avg: <b>' + data.avg + ' iterations per second</b>, Min: ' + data.min + ' iterations per second, Max: ' + data.max + ' iterations per second');
       }
       if (testNames.length) {
         setTimeout(runNextTest, 100);

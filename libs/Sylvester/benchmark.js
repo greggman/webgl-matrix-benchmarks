@@ -58,10 +58,10 @@ var tests = (function () {
             test: function (count, maxCount, milliSeconds) {
                 var m1 = randomMatrix(),
                     m2 = randomMatrix(),
-                    start = Date.now(),
+                    start = performance.now(),
                     loopCount = 0,
                     i;
-                while (Date.now() - start < milliSeconds &&
+                while (performance.now() - start < milliSeconds &&
                            loopCount !== maxCount) {
                     loopCount += 1;
                     for (i = 0; i < count; i += 1) {
@@ -69,7 +69,7 @@ var tests = (function () {
                     }
                 }
                 return {
-                    time: Date.now() - start,
+                    time: performance.now() - start,
                     loopCount: loopCount,
                     result: webglMatrix(m1)
                 };
@@ -95,10 +95,10 @@ var tests = (function () {
         'Transpose': {
             test: function (count, maxCount, milliSeconds) {
                 var m1 = randomMatrix(),
-                    start = Date.now(),
+                    start = performance.now(),
                     loopCount = 0,
                     i;
-                while (Date.now() - start < milliSeconds &&
+                while (performance.now() - start < milliSeconds &&
                            loopCount !== maxCount) {
                     loopCount += 1;
                     for (i = 0; i < count; i += 1) {
@@ -106,7 +106,7 @@ var tests = (function () {
                     }
                 }
                 return {
-                    time: Date.now() - start,
+                    time: performance.now() - start,
                     loopCount: loopCount,
                     result: webglMatrix(m1)
                 };
@@ -116,10 +116,10 @@ var tests = (function () {
         'Inverse': {
             test: function (count, maxCount, milliSeconds) {
                 var m1 = perspectiveMatrix(Math.PI / 2, 0.5, 1, 1000),
-                    start = Date.now(),
+                    start = performance.now(),
                     loopCount = 0,
                     i;
-                while (Date.now() - start < milliSeconds &&
+                while (performance.now() - start < milliSeconds &&
                            loopCount !== maxCount) {
                     loopCount += 1;
                     for (i = 0; i < count; i += 1) {
@@ -127,7 +127,7 @@ var tests = (function () {
                     }
                 }
                 return {
-                    time: Date.now() - start,
+                    time: performance.now() - start,
                     loopCount: loopCount,
                     result: webglMatrix(m1)
                 };
@@ -137,14 +137,14 @@ var tests = (function () {
         'Inverse 3x3': {
             test: function (count, maxCount, milliSeconds) {
                 var m1 = randomMatrix(),
-                    start = Date.now(),
+                    start = performance.now(),
                     loopCount = 0,
                     i,
                     mg = webglMatrix(m1);
                 m1 = $M([[mg[0], mg[1], mg[2]],
                          [mg[4], mg[5], mg[7]],
                          [mg[8], mg[9], mg[10]]]).transpose();
-                while (Date.now() - start < milliSeconds &&
+                while (performance.now() - start < milliSeconds &&
                            loopCount !== maxCount) {
                     loopCount += 1;
                     for (i = 0; i < count; i += 1) {
@@ -154,7 +154,7 @@ var tests = (function () {
                 m1 = m1.transpose().augment($V([0, 0, 0])).
                     transpose().augment($V([0, 0, 0, 1]));
                 return {
-                    time: Date.now() - start,
+                    time: performance.now() - start,
                     loopCount: loopCount,
                     result: webglMatrix(m1)
                 };
