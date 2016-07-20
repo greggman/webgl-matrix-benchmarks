@@ -132,10 +132,39 @@
           }},
 
         'Inverse 3x3':
-          { test: null },
+          { test: function(count, maxCount, milliSeconds) {
+            var m1 = mat3.create();
+            mat3.fromMat4(m1, glMatrixRandom());
+            var start = performance.now();
+            var loopCount = 0;
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
+              ++loopCount;
+              for (var i = 0; i < count; ++i) {
+                mat3.invert(m1, m1);
+              }
+            }
+            var m2 = mat4.fromValues(
+                m1[0], m1[1], m1[2], 0,
+                m1[3], m1[4], m1[5], 0,
+                m1[6], m1[7], m1[8], 0,
+                0, 0, 0, 1);
+            return {time:performance.now()-start, loopCount: loopCount, result: m2};
+          }},
 
         'Vector Transformation':
-          { test: null}
+          { test: function(count, maxCount, milliSeconds) {
+            var m1 = glMatrixRandom();
+            var v1 = vec3.clone([1, 2, 3]);
+            var start = performance.now();
+            var loopCount = 0;
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
+              ++loopCount;
+              for (var i = 0; i < count; ++i) {
+                vec3.transformMat4(v1, v1, m1);
+              }
+            }
+            return {time:performance.now()-start, loopCount: loopCount, result: v1};
+          }}
 
       };
 

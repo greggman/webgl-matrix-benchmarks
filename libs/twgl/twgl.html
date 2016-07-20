@@ -133,8 +133,23 @@
             return {time:performance.now()-start, loopCount: loopCount, result: m1};
           }},
 
+        'Inverse 3x3':
+          { test: null },
+
         'Vector Transformation':
-          { test: null }
+          { test: function(count, maxCount, milliSeconds) {
+            var m1 = twglMatrixRandom();
+            var v1 = v3.create([1, 2, 3]);
+            var start = performance.now();
+            var loopCount = 0;
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
+              ++loopCount;
+              for (var i = 0; i < count; ++i) {
+                m4.transformPoint(m1, v1, v1);
+              }
+            }
+            return {time:performance.now()-start, loopCount: loopCount, result: v1};
+          }}
 
       };
 
