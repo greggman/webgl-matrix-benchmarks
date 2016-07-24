@@ -211,8 +211,10 @@
         {name: 'TDLFast',      url: 'libs/tdl/tdl-fast.html'             },
         {name: 'closure',      url: 'libs/closure/closure.html'          },
         {name: 'twgl',         url: 'libs/twgl/twgl.html'                },
+        {name: 'twgl-native',  url: 'libs/twgl/twgl-native.html'         },
         {name: 'Sylvester',    url: 'libs/Sylvester/Sylvester.html'      }
       ];
+      var libraries = testURLs.map(function(t) { return t.name;});
 
       var waiting = 1;
 
@@ -336,8 +338,6 @@
 
       var data_table_head = document.getElementById("data-table-head");
       var data_table_body = document.getElementById("data-table-body");
-
-      var libraries = ["glMatrix", "mjs", "CanvasMatrix", "EWGL", "TDLMath",  "TDLFast", "closure", "twgl", "Sylvester"];
 
       function library_to_id(library) {
         return library.toLowerCase().replace(/\W/g, '_');
