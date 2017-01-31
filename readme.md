@@ -1,7 +1,7 @@
 Simple benchmarks for testing the speed of JavaScript matrix libraries adapted from Brandon Jones benchmarks
 in his glmatrix library: https://glmatrix.googlecode.com/hg/
 
-If you have a browser with WebGL you can run the benchmarks [here](http://stepheneb.github.com/webgl-matrix-benchmarks/matrix_benchmark.html).
+If you have a browser with WebGL you can run the benchmarks [here](http://greggman.github.io/webgl-matrix-benchmarks/matrix_benchmark.html).
 
 This work is based on Brandon's work as of this commit:
 
@@ -15,7 +15,9 @@ Comparing these matrix libraries:
 * [mjs](http://code.google.com/p/webgl-mjs), [MIT license](http://www.opensource.org/licenses/mit-license.php)
 * CanvasMatrix
 * [EWGL_math](http://code.google.com/p/ewgl-matrices), [New BSD license](http://www.opensource.org/licenses/bsd-license.php)
-* [tdl](http://code.google.com/p/threedlibrary/), [New BSD license](http://www.opensource.org/licenses/bsd-license.php)
+* [tdl](http://github.com/greggman/tdl/), [New BSD license](http://www.opensource.org/licenses/bsd-license.php)
+* [Three.js](http://threejs.org), [New BSD license](http://www.opensource.org/licenses/bsd-license.php)
+* [twgl](http://twgljs.org), [New BSD license](http://www.opensource.org/licenses/bsd-license.php)
 * [Closure](http://closure-library.googlecode.com/), [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 * [Sylvester](http://sylvester.jcoglan.com/), [MIT license](http://www.opensource.org/licenses/mit-license.php)
 
