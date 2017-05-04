@@ -21,7 +21,7 @@
       window.onload = TestHelper.main;
 
       function twglMatrixRandom() {
-        var m = new Float32Array(16);
+        var m = new Array(16).fill(0);
         var axis = v3.normalize([pseudoRandom(), pseudoRandom(), pseudoRandom()]);
         m4.identity(m);
         m4.axisRotate(m, axis, pseudoRandom(), m);
@@ -39,7 +39,7 @@
             while (performance.now() - start < milliSeconds && loopCount != maxCount) {
               ++loopCount;
               for (var i = 0; i < count; ++i) {
-                m4.multiply(m2, m1, m1);
+                m4.multiply(m1, m2, m1);
               }
             }
             return {time:performance.now()-start, loopCount: loopCount, result: m1};
@@ -48,7 +48,7 @@
         'Translation':
           { test: function(count, maxCount, milliSeconds) {
             var m1 = twglMatrixRandom();
-            var v1 = new Float32Array([1, 2, 3]);
+            var v1 = [1, 2, 3];
             var start = performance.now();
             var loopCount = 0;
             while (performance.now() - start < milliSeconds && loopCount != maxCount) {
@@ -63,7 +63,7 @@
         'Scaling':
           { test: function(count, maxCount, milliSeconds) {
             var m1 = twglMatrixRandom();
-            var v1 = new Float32Array([1, 2, 3]);
+            var v1 = [1, 2, 3];
             var start = performance.now();
             var loopCount = 0;
             while (performance.now() - start < milliSeconds && loopCount != maxCount) {
@@ -78,7 +78,7 @@
         'Rotation (Arbitrary axis)':
           { test: function(count, maxCount, milliSeconds) {
             var m1 = twglMatrixRandom();
-            var v1 = new Float32Array([1, 2, 3]);
+            var v1 = [1, 2, 3];
             v3.normalize(v1, v1, v1);
             var a = Math.PI/2;
             var start = performance.now();
