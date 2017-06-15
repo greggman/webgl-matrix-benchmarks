@@ -26,6 +26,9 @@
         return m;
       }
 
+      if (window.location.hash == "#native")
+        glMatrix.ARRAY_TYPE = Array;
+
       var tests = {
         'Multiplication':
           { test: function(count, maxCount, milliSeconds) {
