@@ -206,18 +206,22 @@
     <script type="text/javascript">
 
       testURLs = [
-        {name: 'glMatrix',        url: 'libs/glMatrix/glMatrix.html'        },
-        {name: 'glMatrix-native', url: 'libs/glMatrix/glMatrix.html#native' },
-        {name: 'mjs',             url: 'libs/mjs/mjs.html'                  },
-        {name: 'CanvasMatrix',    url: 'libs/CanvasMatrix/CanvasMatrix.html'},
-        {name: 'EWGL',            url: 'libs/EWGL_math/EWGL_math.html'      },
-        {name: 'TDLMath',         url: 'libs/tdl/tdl-math.html'             },
-        {name: 'TDLFast',         url: 'libs/tdl/tdl-fast.html'             },
-        {name: 'closure',         url: 'libs/closure/closure.html'          },
-        {name: 'Three',           url: 'libs/three.js/three.js.html'        },
-        {name: 'twgl',            url: 'libs/twgl/twgl.html'                },
-        {name: 'twgl-native',     url: 'libs/twgl/twgl-native.html'         },
-        {name: 'Sylvester',       url: 'libs/Sylvester/Sylvester.html'      }
+        {name: 'glMatrix',          url: 'libs/glMatrix/glMatrix.html'         },
+        {name: 'glMatrix-native',   url: 'libs/glMatrix/glMatrix.html#native'  },
+        {name: 'glMatrix-native64', url: 'libs/glMatrix/glMatrix.html#native64'},
+        {name: 'mjs',               url: 'libs/mjs/mjs.html'                   },
+        {name: 'CanvasMatrix',      url: 'libs/CanvasMatrix/CanvasMatrix.html' },
+        {name: 'EWGL',              url: 'libs/EWGL_math/EWGL_math.html'       },
+        {name: 'TDLMath',           url: 'libs/tdl/tdl-math.html'              },
+        {name: 'TDLFast',           url: 'libs/tdl/tdl-fast.html'              },
+        {name: 'closure',           url: 'libs/closure/closure.html'           },
+        {name: 'Three',             url: 'libs/three.js/three.js.html'         },
+        {name: 'twgl-math',         url: 'libs/twgl-math/twgl-math.html'       },
+        {name: 'twgl-math-native',  url: 'libs/twgl-math/twgl-math.html#native'},
+        {name: 'twgl',              url: 'libs/twgl/twgl.html'                 },
+        {name: 'twgl-native',       url: 'libs/twgl/twgl-native.html'          },
+        {name: 'twgl-native64',     url: 'libs/twgl/twgl-native64.html'        },
+        {name: 'Sylvester',         url: 'libs/Sylvester/Sylvester.html'       },
       ];
       var libraries = testURLs.map(function(t) { return t.name;});
 
@@ -250,6 +254,9 @@
           var testInfo = testURLs[ii];
           var tests = testInfo.iframe.contentWindow.tests;
           for (var testName in tests) {
+            //if (testName !== 'Scaling') {
+            //  continue;
+            //}
             if (!sets[testName]) {
               sets[testName] = [];
             }
@@ -281,7 +288,10 @@
         '#118800',
         '#770099',
         '#aa4400',
-        '#008877'
+        '#008877',
+        '#880077',
+        '#887700',
+        '#578800',
       ];
 
       function plotBenchmarks() {
