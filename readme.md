@@ -1,7 +1,23 @@
 Simple benchmarks for testing the speed of JavaScript matrix libraries adapted from Brandon Jones benchmarks
 in his glmatrix library: https://glmatrix.googlecode.com/hg/
 
-If you have a browser with WebGL you can run the benchmarks [here](http://greggman.github.io/webgl-matrix-benchmarks/matrix_benchmark.html).
+You can run the benchmarks [here](https://greggman.github.io/webgl-matrix-benchmarks/matrix_benchmark.html).
+
+You can select specific benchmarks by adding `?tests=name,name,name` for example
+
+test glMatrix (float32) vs glMatrix-native vs glMatrix-float64
+
+https://greggman.github.io/webgl-matrix-benchmarks/matrix_benchmark.html?tests=glMatrix,glMatrix-native,glMatrix-float64
+
+test twgl (float32) vs twgl-native vs twgl-float64
+
+https://greggman.github.io/webgl-matrix-benchmarks/matrix_benchmark.html?tests=twgl,twgl-native,twgl-float64
+
+Note: an observation ... whether or not a particlar JavaScript engine optimizes something seems to be
+context dependent. I've seen one library outperform another even when the code is **EXACTLY** the same.
+In trying to track down why one was faster than another I copy the code (say matrix multiply) from
+one library to the other and yet still found a difference in execution larger than noise. In general though
+execution is consistant across runs
 
 This work is based on Brandon's work as of this commit:
 
@@ -33,77 +49,4 @@ Changes from Brandon's original benchmark code include:
 Brandon's original code was released under the [New BSD license](http://www.opensource.org/licenses/bsd-license.php).
 My additions to the benchmarking code are released under the same license.
 
-## Running locally requires a web server.
 
-With the recent changes by Gregg Tavares that run each library in an iFrame you will need to either:
-
-* Run the benchmarks from a local web server
-* Configure the browser to allow local file access
-
-### Configuring Chrome to allow local file access
-
-On Windows you can add a flag in the shortcut. 
-
-On Mac OS X start Chrome from the command line like this:
-
-    /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --allow-file-access-from-files
-
-### Using Python's SimpleHTTPServer
-
-    cd /path/to/webgl-matrix-benchmarks
-    python -m SimpleHTTPServer
-
-Now open: <http://localhost:8000/matrix_benchmark.html>
-
-### Set up an webgl-matrix-benchmarks.local local host and Apache vhost on Mac OS X
-
-On OS X, turn on Web Sharing via (Apple Menu) -> System Preferences -> Sharing -> Web Sharing
-
-Now, make sure that virtual hosting is enabled by editing `/private/etc/apache2/httpd.conf` and uncommenting the
-virtual hosting line (at about line 465 of the stock `httpd.conf`) as follows:
-
-    # Virtual hosts
-    Include /private/etc/apache2/extra/httpd-vhosts.conf
-
-At the top of httpd-vhosts.conf enable name-based virtual hosts for port 80 on all interfaces:
-
-    NameVirtualHost *:80
-    
-Edit the virtual hosting configuration file `/private/etc/apache2/extra/httpd-vhosts.conf` to include the entry:
-
-    <VirtualHost webgl-matrix-benchmarks.local:80>
-       ServerName webgl-matrix-benchmarks
-       DocumentRoot /path/to/webgl-matrix-benchmarks
-       PassengerEnabled off
-       <Directory /path/to/webgl-matrix-benchmarks >
-         Options +Indexes +FollowSymLinks +MultiViews +Includes
-         AllowOverride All
-         Order allow,deny
-         Allow from all
-         DirectoryIndex matrix_benchmark.html
-      </Directory>
-    </VirtualHost>
-
-after making changes test the config: `apachectl configtest` 
-
-When the configuration syntax is correct restart apache:  `sudo apachectl restart`
-
-If there are issues try tailing the general apache2 error log: `tail -n 200 -f /var/log/apache2/error_log`
-
-For more instructions, set <http://shapeshed.com/journal/setting_up_local_websites_on_snow_leopard/>.
-
-And, finally, edit your `/etc/hosts` file to include the following line:
-
-    127.0.0.1       webgl-matrix-benchmarks.local
-
-Confirm that the new entry works:
-
-    $ dscacheutil -q host -a name webgl-matrix-benchmarks.local
-    name: webgl-matrix-benchmarks.local
-    ip_address: 127.0.0.1
-
-It might be necessary to flush the local DNS cache:
-
-    $ sudo dscacheutil -flushcache
-
-Now open: <http://webgl-matrix-benchmarks.local/>
