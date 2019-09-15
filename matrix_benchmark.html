@@ -203,7 +203,9 @@
     <div id="logDiv"></div>
 
     <!-- Benchmarks -->
-    <script type="text/javascript">
+    <script>
+      const query = Object.fromEntries(new URLSearchParams(window.location.search).entries());
+      const urlTests = new Set(query.tests ? query.tests.split(',').map(s => s.toLowerCase()) : []);
 
       testURLs = [
         {name: 'glMatrix',          url: 'libs/glMatrix/glMatrix.html'         },
@@ -222,7 +224,9 @@
         {name: 'twgl-native',       url: 'libs/twgl/twgl-native.html'          },
         {name: 'twgl-float64',      url: 'libs/twgl/twgl-float64.html'         },
         {name: 'Sylvester',         url: 'libs/Sylvester/Sylvester.html'       },
-      ];
+      ].filter((t) => urlTests.size
+            ? urlTests.has(t.name.toLowerCase())
+            : true);
       var libraries = testURLs.map(function(t) { return t.name;});
 
       var waiting = 1;
