@@ -115,7 +115,7 @@
 
       var kEpsilon = 0.001;
       function Compare(a, b, pre) {
-        if (b.isVector3) {
+        if (b.isVector3 || b.x !== undefined) {
           b = [b.x, b.y, b.z];
         }
         if (b.m11) {
@@ -209,6 +209,7 @@
 
       testURLs = [
         {name: 'glMatrix',          url: 'libs/glMatrix/glMatrix.html'         },
+        {name: 'DOMMatrix',         url: 'libs/DOMMatrix/DOMMatrix.html'       },
         {name: 'glMatrix-native',   url: 'libs/glMatrix/glMatrix.html#native'  },
         {name: 'glMatrix-float64',  url: 'libs/glMatrix/glMatrix.html#float64' },
         {name: 'mjs',               url: 'libs/mjs/mjs.html'                   },
@@ -296,6 +297,7 @@
         '#880077',
         '#887700',
         '#578800',
+        'pink',
       ];
 
       function plotBenchmarks() {

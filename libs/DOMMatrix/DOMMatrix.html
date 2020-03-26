@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Matrix Benchmark</title>
+
+    <!-- Common Utilities -->
+    <script type="text/javascript" src="../../js/rand.js"></script>
+
+    <!-- Benchmarking utilities -->
+    <script type="text/javascript" src="../../js/test-helper.js"></script>
+    <script type="text/javascript">
+      window.onload = TestHelper.main;
+
+      function normalize(v) {
+        const len = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+        return [v[0] / len, v[1] / len, v[2] / len];
+      }
+
+      function domMatrixRandom() {
+        var m = new DOMMatrix();
+        var axis = normalize([pseudoRandom(), pseudoRandom(), pseudoRandom()]);
+        m.rotateAxisAngleSelf(...axis, pseudoRandom() * 180 / Math.PI);  // WTF DOMMatrix uses degrees!
+        m.translateSelf(pseudoRandom(), pseudoRandom(), pseudoRandom());
+        return m;
+      }
+
+      function perspective(fieldOfViewYInRadians, aspect, zNear, zFar) {
+
+        var f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewYInRadians);
+        var rangeInv = 1.0 / (zNear - zFar);
+
+        return DOMMatrix.fromFloat64Array(new Float64Array([
+          f / aspect,
+          0,
+          0,
+          0,
+
+          0,
+          f,
+          0,
+          0,
+
+          0,
+          0,
+          (zNear + zFar) * rangeInv,
+          -1,
+
+          0,
+          0,
+          zNear * zFar * rangeInv * 2,
+          0,
+        ]));
+      }
+
+      function transposeSelf(m) {
+        const d = new DOMMatrix(m);
+        m.m12 = d.m21; m.m13 = d.m31; m.m14 = d.m41;
+        m.m21 = d.m12; m.m23 = d.m32; m.m24 = d.m42;
+        m.m31 = d.m13; m.m32 = d.m23; m.m34 = d.m43;
+        m.m41 = d.m14; m.m42 = d.m24; m.m43 = d.m34;
+      }
+
+      var tests = {
+        'Multiplication':
+          { test: function(count, maxCount, milliSeconds) {
+            var m1 = domMatrixRandom();
+            var m2 = domMatrixRandom();
+            var start = performance.now();
+            var loopCount = 0;
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
+              ++loopCount;
+              for (var i = 0; i < count; ++i) {
+                m1.multiplySelf(m2);
+              }
+            }
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+          }},
+
+        'Translation':
+          { test: function(count, maxCount, milliSeconds) {
+            var m1 = domMatrixRandom();
+            var v1 = {x:1, y:2, z:3};
+            var start = performance.now();
+            var loopCount = 0;
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
+              ++loopCount;
+              for (var i = 0; i < count; ++i) {
+                m1.translateSelf(v1.x, v1.y, v1.z);
+              }
+            }
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+          }},
+
+        'Scaling':
+          { test: function(count, maxCount, milliSeconds) {
+            var m1 = domMatrixRandom();
+            var v1 = {x:1, y:2, z:3};
+            var start = performance.now();
+            var loopCount = 0;
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
+              ++loopCount;
+              for (var i = 0; i < count; ++i) {
+                m1.scaleSelf(v1.x, v1.y, v1.z);
+              }
+            }
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+          }},
+
+        'Rotation (Arbitrary axis)':
+          { test: function(count, maxCount, milliSeconds) {
+            var m1 = domMatrixRandom();
+            var v1 = normalize([1, 2, 3]);
+            var a = Math.PI/2 * 180 / Math.PI;  // WTF DOMMatrix uses degrees!
+            var start = performance.now();
+            var loopCount = 0;
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
+              ++loopCount;
+              for (var i = 0; i < count; ++i) {
+                m1.rotateAxisAngleSelf(...v1, a);
+              }
+            }
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+          }},
+
+        'Rotation (X axis)':
+          { test: function(count, maxCount, milliSeconds) {
+            var m1 = domMatrixRandom();
+            var a = Math.PI/2 * 180 / Math.PI;  // WTF DOMMatrix uses degrees!
+            var start = performance.now();
+            var loopCount = 0;
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
+              ++loopCount;
+              for (var i = 0; i < count; ++i) {
+                m1.rotateAxisAngleSelf(1, 0, 0, a);
+              }
+            }
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+          }},
+
+        'Transpose':
+          { test: function(count, maxCount, milliSeconds) {
+            var m1 = domMatrixRandom();
+            var start = performance.now();
+            var loopCount = 0;
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
+              ++loopCount;
+              for (var i = 0; i < count; ++i) {
+                transposeSelf(m1);
+              }
+            }
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+          }},
+
+        'Inverse':
+          { test: function(count, maxCount, milliSeconds) {
+            var m1 = perspective(Math.PI/2, 0.5, 1, 1000);
+            var start = performance.now();
+            var loopCount = 0;
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
+              ++loopCount;
+              for (var i = 0; i < count; ++i) {
+                m1.invertSelf();
+              }
+            }
+            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+          }},
+
+        'Inverse 3x3':
+          { test: null },
+
+        'Vector Transformation':
+          { test: function(count, maxCount, milliSeconds) {
+            var m1 = domMatrixRandom();
+            var v1 = new DOMPoint(1, 2, 3);
+            var start = performance.now();
+            var loopCount = 0;
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
+              ++loopCount;
+              for (var i = 0; i < count; ++i) {
+                v1 = m1.transformPoint(v1);
+              }
+            }
+            return {time:performance.now()-start, loopCount: loopCount, result: v1};
+          }}
+
+      };
+
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
