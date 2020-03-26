@@ -214,7 +214,7 @@
         {name: 'glMatrix-float64',  url: 'libs/glMatrix/glMatrix.html#float64' },
         {name: 'mjs',               url: 'libs/mjs/mjs.html'                   },
         {name: 'CanvasMatrix',      url: 'libs/CanvasMatrix/CanvasMatrix.html' },
-        {name: 'EWGL',              url: 'libs/EWGL_math/EWGL_math.html'       },
+//        {name: 'EWGL',              url: 'libs/EWGL_math/EWGL_math.html'       },
         {name: 'TDLMath',           url: 'libs/tdl/tdl-math.html'              },
         {name: 'TDLFast',           url: 'libs/tdl/tdl-fast.html'              },
         {name: 'closure',           url: 'libs/closure/closure.html'           },
@@ -259,6 +259,7 @@
           var testInfo = testURLs[ii];
           var tests = testInfo.iframe.contentWindow.tests;
           for (var testName in tests) {
+            if (testName === 'Inverse 3x3') continue;
             //if (testName !== 'Scaling') {
             //  continue;
             //}
@@ -298,6 +299,7 @@
         '#887700',
         '#578800',
         'pink',
+        'lavender',
       ];
 
       function plotBenchmarks() {

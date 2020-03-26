@@ -24,7 +24,7 @@
       function ewglMatrixRandom() {
         var m = new m4x4;
         var axis = (new v3([pseudoRandom(), pseudoRandom(), pseudoRandom()])).normalize();
-        m.rotate(pseudoRandom(), axis);
+        m.rotate(pseudoRandom() * 180 / Math.PI, axis);
         m.translate(new v3([pseudoRandom(), pseudoRandom(), pseudoRandom()]));
         return m;
       }
