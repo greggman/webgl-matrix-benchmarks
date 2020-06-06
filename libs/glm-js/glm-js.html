@@ -6,14 +6,14 @@
     <title>Matrix Benchmark</title>
 
     <!-- Common Utilities -->
-    <script type="text/javascript" src="../../js/rand.js"></script>
+    <script src="../../js/rand.js"></script>
 
     <!-- Matrix Libraries -->
-    <script type="text/javascript" src="glm-js.min.js"></script>
+    <script src="glm-js.min.js"></script>
 
     <!-- Benchmarking utilities -->
-    <script type="text/javascript" src="../../js/test-helper.js"></script>
-    <script type="text/javascript">
+    <script src="../../js/test-helper.js"></script>
+    <script>
 
       window.onload = TestHelper.main;
 
@@ -44,7 +44,7 @@
                 m1['*='](m2);
               }
             }
-            return {time: performance.now()-start, loopCount: loopCount, result: m1.array};
+            return {time: performance.now() - start, loopCount: loopCount, result: m1.array};
           }},
 
         'Translation':
@@ -59,7 +59,7 @@
                 m1 = glm.translate(m1, v1);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1.array};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1.array};
           }},
 
         'Scaling':
@@ -74,7 +74,7 @@
                 m1 = glm.scale(m1, v1);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1.array};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1.array};
           }},
 
         'Rotation (Arbitrary axis)':
@@ -90,7 +90,7 @@
                 m1 = glm.rotate(m1, a, v1);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1.array};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1.array};
           }},
 
         'Rotation (X axis)':
@@ -106,7 +106,7 @@
                 m1 = glm.rotate(m1, a, axis);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1.array};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1.array};
           }},
 
         'Transpose':
@@ -120,7 +120,7 @@
                 m1 = glm.transpose(m1);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1.array};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1.array};
           }},
 
         'Inverse':
@@ -134,7 +134,7 @@
                 m1 = glm.inverse(m1);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1.array};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1.array};
           }},
 
         'Inverse 3x3':
@@ -149,7 +149,7 @@
               }
             }
             var m2 = glm.mat4(m1);
-            return {time:performance.now()-start, loopCount: loopCount, result: m2.array};
+            return {time:performance.now() - start, loopCount: loopCount, result: m2.array};
           }},
 
         'Vector Transformation':
@@ -167,7 +167,7 @@
                 v1 = glm.vec3(v4['/'](v4.w));
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: v1.array};
+            return {time:performance.now() - start, loopCount: loopCount, result: v1.array};
           }}
 
       };

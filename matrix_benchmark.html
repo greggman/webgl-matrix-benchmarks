@@ -5,23 +5,23 @@
     <title>Matrix Benchmark</title>
 
     <!-- Common Utilities -->
-    <script type="text/javascript" src="sprintf.js"></script>
+    <script src="sprintf.js"></script>
 
     <!-- Graphing Utilities -->
-    <link type="text/css" rel="stylesheet" href="flotr/flotr.css"/>
-    <script type="text/javascript" src="flotr/lib/prototype.js"></script>
-    <script type="text/javascript" src="flotr/lib/canvas2image.js"></script>
-    <script type="text/javascript" src="flotr/lib/canvastext.js"></script>
-    <script type="text/javascript" src="flotr/flotr.js"></script>
+    <link rel="stylesheet" href="flotr/flotr.css"/>
+    <script src="flotr/lib/prototype.js"></script>
+    <script src="flotr/lib/canvas2image.js"></script>
+    <script src="flotr/lib/canvastext.js"></script>
+    <script src="flotr/flotr.js"></script>
 
     <!-- Table Utilities -->
-    <link type="text/css" rel="stylesheet" href="table/table.css"/>
-    <script type="text/javascript" src="table/fastinit.js"></script>
-    <script type="text/javascript" src="table/tablesort.js"></script>
-    <script type="text/javascript" src="js/test-helper.js"></script>
+    <link rel="stylesheet" href="table/table.css"/>
+    <script src="table/fastinit.js"></script>
+    <script src="table/tablesort.js"></script>
+    <script src="js/test-helper.js"></script>
 
     <!-- Benchmarking utilities -->
-    <script type="text/javascript">
+    <script>
 
       testData = {};
       testSets = [];
@@ -34,14 +34,14 @@
       }
 
       function log(html) {
-        document.getElementById('logDiv').innerHTML += html + '<br/><br/>'
+        document.getElementById('logDiv').innerHTML += `${html}<br/><br/>`;
       }
 
       function logTitle(title) {
         document.getElementById('logDiv').innerHTML +=
-        '=============================================<br/>' +
-        '<b>' + title + '</b><br/>' +
-        '=============================================' + '<br/><br/>'
+        `=============================================<br/>
+        <b>${title}</b><br/>
+        =============================================<br/><br/>`
       }
 
       function preTest(library, f, testInfo) {
@@ -52,10 +52,10 @@
           return;
         }
 
-        var internalRunCount = 5;
+        const internalRunCount = 5;
         testInfo.iframe.contentWindow.TestHelper.resetPseudoRandom();
 
-        var data = f(internalRunCount, 1, 1000);
+        const data = f(internalRunCount, 1, 1000);
         return data.result;
       }
 
@@ -65,36 +65,164 @@
         testSets.push({name: name, tests: tests});
       }
 
+      const testExpectations = {
+        "Multiplication": [
+          0.6385460984912775,
+          0.43840551580428533,
+          -0.6325025563694953,
+          0,
+          -0.4632045612839432,
+          0.8752755101161355,
+          0.13904789029930814,
+          0,
+          0.6145733597442358,
+          0.2041895812800381,
+          0.7619751967022057,
+          0,
+          0.8050555819154855,
+          4.179172489215083,
+          0.2860449482689801,
+          1,
+        ],
+        "Translation": [
+          0.9727557641801426,
+          0.23167851557964655,
+          -0.008443261995110621,
+          0,
+          -0.23167851557911032,
+          0.9727919007737021,
+          0.0009915685288995337,
+          0,
+          0.008443262009824959,
+          0.000991568403606104,
+          0.9999638634064405,
+          0,
+          2.6013978068953914,
+          11.503320814604654,
+          15.224590227324757,
+          1,
+        ],
+        "Scaling": [
+          0.9727557641801426,
+          0.23167851557964655,
+          -0.008443261995110621,
+          0,
+          -7.41371249853153,
+          31.12934082475847,
+          0.03173019292478508,
+          0,
+          2.0517126683874647,
+          0.24095112207628325,
+          242.99121880776505,
+          0,
+          -0.07224478836159305,
+          0.6021357029153118,
+          0.25743290091471005,
+          1,
+        ],
+        "Rotation (Arbitrary axis)": [
+          -0.15207428255741823,
+          0.9351699148446813,
+          -0.31989161125924837,
+          0,
+          -0.7012933957103117,
+          0.12597137617081197,
+          0.7016543205302254,
+          0,
+          0.6964631976764796,
+          0.3310414517171878,
+          0.6366714784936026,
+          0,
+          -0.07224478836159305,
+          0.6021357029153118,
+          0.25743290091471005,
+          1,
+        ],
+        "Rotation (X axis)": [
+          0.9727557641801426,
+          0.23167851557964655,
+          -0.008443261995110621,
+          0,
+          0.00844326200982489,
+          0.0009915684036064022,
+          0.9999638634064405,
+          0,
+          0.23167851557911032,
+          -0.9727919007737021,
+          -0.000991568528899228,
+          0,
+          -0.07224478836159305,
+          0.6021357029153118,
+          0.25743290091471005,
+          1,
+        ],
+        "Transpose": [
+          0.9727557641801426,
+          -0.23167851557911032,
+          0.008443262009824959,
+          -0.07224478836159305,
+          0.23167851557964655,
+          0.9727919007737021,
+          0.000991568403606104,
+          0.6021357029153118,
+          -0.008443261995110621,
+          0.0009915685288995337,
+          0.9999638634064405,
+          0.25743290091471005,
+          0,
+          0,
+          0,
+          1,
+        ],
+        "Inverse": [
+          0.5000000000000001,
+          0,
+          0,
+          0,
+          0,
+          1.0000000000000002,
+          0,
+          0,
+          0,
+          0,
+          0,
+          -0.49950000000000006,
+          0,
+          0,
+          -1.0000000000000002,
+          0.5005000000000001,
+        ],
+        "Vector Transformation": [
+          -2.9180960655212402, 4.165017127990723, 4.317984104156494,
+        ]
+      };
+
       function runTestSet(name, tests) {
         setTimeout(function() {
           logTitle(name);
-          var results = [];
-          var baseResult = null;
-          for(var i = 0; i < tests.length; ++i) {
-            var test = tests[i];
-            var result = preTest(test.library, test.test, test.testInfo);
+          const results = [];
+          const expected = testExpectations[name];
+          for(const test of tests) {
+            const result = preTest(test.library, test.test, test.testInfo);
             results.push(result);
-            if (!baseResult && result) {
-              baseResult = result;
-            }
-            var library = test.library;
-            var data = TestHelper.test(library, test.test, testData[name]);
+            const library = test.library;
+            const data = TestHelper.test(library, test.test, testData[name]);
             testData[name][library] = data;
             if (data.avg === null) {
-              log('<i>' + library + ' Unsupported</i>');
+              log(`<i>${library} Unsupported</i>`);
             } else {
-              log('<i>' + library + '</i> - Avg: <b>' + data.avg + ' iterations per second</b>, Min: ' + data.min + ' iterations per second, Max: ' + data.max + ' iterations per second');
+              log(`<i>${library}</i> - Avg: <b>${data.avg} iterations per second</b>, Min: ${data.min} iterations per second, Max: ${data.max} iterations per second`);
             }
           }
 
           // Compare the results to make sure we are testing the same thing
-          for (var i = 0; i < results.length; ++i) {
-            if (results[i] && !Compare(baseResult, results[i])) {
+          for (let i = 0; i < results.length; ++i) {
+            if (results[i] && !Compare(expected, results[i])) {
               debuggerLog(name);
               debuggerLog(tests[i].library);
-              debuggerLog(baseResult);
+              debuggerLog(expected);
               debuggerLog(results[i]);
-              log('<strong>' + tests[i].library + ': results do NOT match!!!</strong>');
+              log(`<strong>${tests[i].library}: results do NOT match!!!</strong>`);
               testData[name][tests[i].library].bad = true;
             }
           }
@@ -108,12 +236,12 @@
 
       function runNextTest() {
         if (testSetIndex < testSets.length) {
-          var set = testSets[testSetIndex++];
-          runTestSet(set.name, set.tests);
+          const {name, tests} = testSets[testSetIndex++];
+          runTestSet(name, tests);
         }
       }
 
-      var kEpsilon = 0.001;
+      const kEpsilon = 0.001;
       function Compare(a, b, pre) {
         if (b.isVector3 || b.x !== undefined) {
           b = [b.x, b.y, b.z];
@@ -136,27 +264,32 @@
             if (typeof(b) !== 'number') {
               return false;
             }
-            var diff =Math.abs(a - b);
+           const diff = Math.abs(a - b);
             if (diff > kEpsilon) {
-              log('<strong>Mismatch: ' + pre + ' ' + a + ' != ' + b + ' diff = ' + diff + '</strong>');
+              log(`<strong>Mismatch: ${pre} ${a} != ${b} diff = ${diff}</strong>`);
               return false;
             }
           } else if (a.length) {
-            if (a.length !== b.length) return false;
-            for (var i = 0; i < a.length; ++i) {
-              if (!Compare(a[i], b[i], pre + '[' + i.toString() + ']')) return false
+            if (a.length !== b.length) {
+              return false;
             }
-          } else for (var key in a) {
-            if (!Compare(a[key], b[key], pre + '[' + key + ']')) return false;
+            for (let i = 0; i < a.length; ++i) {
+              if (!Compare(a[i], b[i], `${pre}[${i.toString()}]`)) {
+                return false;
+              }
+            }
+          } else for (const key of a) {
+            if (!Compare(a[key], b[key], `${pre}[${key}]`)) {
+              return false;
+            }
           }
           return true;
         }
       }
-
     </script>
 
 
-    <style type="text/css">
+    <style>
       body {
         font: 0.8em Verdana,sans-serif;
       }
@@ -204,10 +337,8 @@
 
     <!-- Benchmarks -->
     <script>
-      const query = Object.fromEntries(new URLSearchParams(window.location.search).entries());
-      const urlTests = new Set(query.tests ? query.tests.split(',').map(s => s.toLowerCase()) : []);
-
-      testURLs = [
+      "use strict";
+      const allTestURLs = [
         {name: 'glMatrix',          url: 'libs/glMatrix/glMatrix.html'         },
         {name: 'DOMMatrix',         url: 'libs/DOMMatrix/DOMMatrix.html'       },
         {name: 'glMatrix-native',   url: 'libs/glMatrix/glMatrix.html#native'  },
@@ -224,15 +355,23 @@
         {name: 'twgl-math',         url: 'libs/twgl-math/twgl-math.html'       },
         {name: 'twgl-math-native',  url: 'libs/twgl-math/twgl-math.html#native'},
         {name: 'twgl',              url: 'libs/twgl/twgl.html'                 },
+        {name: 'twgl-alloc',        url: 'libs/twgl/twgl-alloc.html'           },
         {name: 'twgl-native',       url: 'libs/twgl/twgl-native.html'          },
         {name: 'twgl-float64',      url: 'libs/twgl/twgl-float64.html'         },
         {name: 'Sylvester',         url: 'libs/Sylvester/Sylvester.html'       },
-      ].filter((t) => urlTests.size
-            ? urlTests.has(t.name.toLowerCase())
-            : true);
-      var libraries = testURLs.map(function(t) { return t.name;});
+      ];
+      const query = Object.fromEntries(new URLSearchParams(window.location.search).entries());
+      const urlTests = new Set(query.tests
+            ? query.tests.split(',').map(s => s.toLowerCase())
+            : allTestURLs.map(t => t.name.toLowerCase()).filter(name => name !== 'twgl-alloc'));
+       // twgl-alloc is just to show how much slower it is to allocate new objects
+       // for each result rather than compute them in place.
 
-      var waiting = 1;
+      const testURLs = (allTestURLs.filter((t) => urlTests.has(t.name.toLowerCase())))
+          .sort((b, a) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0);
+      const libraries = testURLs.map(function(t) { return t.name;});
+
+      let waiting = 1;
 
       function childLoaded() {
         --waiting;
@@ -244,9 +383,8 @@
 
       function testMain() {
         // make all the iframes.
-        for (var ii = 0; ii < testURLs.length; ++ii) {
+        for (const testInfo of testURLs) {
           ++waiting;
-          var testInfo = testURLs[ii];
           var iframe = document.createElement('iframe');
           iframe.setAttribute('src', testInfo.url);
           document.body.appendChild(iframe);
@@ -256,15 +394,11 @@
       }
 
       function gatherTests() {
-        var sets = {};
-        for (var ii = 0; ii < testURLs.length; ++ii) {
-          var testInfo = testURLs[ii];
-          var tests = testInfo.iframe.contentWindow.tests;
-          for (var testName in tests) {
+        const sets = {};
+        for (const testInfo of testURLs) {
+          const tests = testInfo.iframe.contentWindow.tests;
+          for (const testName of Object.keys(tests)) {
             if (testName === 'Inverse 3x3') continue;
-            //if (testName !== 'Scaling') {
-            //  continue;
-            //}
             if (!sets[testName]) {
               sets[testName] = [];
             }
@@ -276,15 +410,15 @@
           }
         }
 
-        for (var testName in sets) {
-          testSet(testName, sets[testName]);
+        for (const [testName, set] of Object.entries(sets)) {
+          testSet(testName, set);
         }
         plotBenchmarks();
         createTableData();
         setTimeout(runNextTest, 100);
       }
 
-      var colors = [
+      const colors = [
         '#ff0000',
         '#4444ff',
         '#00dd00',
@@ -307,15 +441,15 @@
       ];
 
       function plotBenchmarks() {
-          var datasets = [];
-          var benchmarks = [];
-          var benchmarkIndex, libraryIndex;
-          benchmarkIndex = 0;
-          var x_axis_tics = [];
-          for (benchmark in testData) {
+          const datasets = [];
+          const benchmarks = [];
+          let benchmarkIndex = 0;
+          let libraryIndex;
+          const x_axis_tics = [];
+          for (const benchmark of Object.keys(testData)) {
             benchmarks.push(benchmark);
             libraryIndex = 0;
-            for (library in testData[benchmark]) {
+            for (const library of Object.keys(testData[benchmark])) {
               if (!datasets[libraryIndex]) {
                 datasets.push({});
                 datasets[libraryIndex]['data'] = [];
@@ -325,14 +459,14 @@
                 datasets[libraryIndex]['points'] = { show: true };
               }
               datasets[libraryIndex]['data'].push([benchmarkIndex, testData[benchmark][library].avg / 1000000]);
-              libraryIndex++;
+              ++libraryIndex;
             }
-            benchmarkIndex++;
+            ++benchmarkIndex;
           }
-          for(i = 0; i < benchmarks.length; i++) {
+          for(let i = 0; i < benchmarks.length; i++) {
             x_axis_tics.push([i, benchmarks[i]])
           }
-          var f = Flotr.draw($('graph'), datasets,
+          const f = Flotr.draw($('graph'), datasets,
             {
               xaxis:{
                 labelsAngle: 60,
@@ -363,65 +497,73 @@
           );
       };
 
-      var data_table_head = document.getElementById("data-table-head");
-      var data_table_body = document.getElementById("data-table-body");
+      const data_table_head = document.getElementById("data-table-head");
+      const data_table_body = document.getElementById("data-table-body");
 
       function library_to_id(library) {
         return library.toLowerCase().replace(/\W/g, '_');
       }
 
       function createTableData() {
-          var row, data, list, item, header;
-          row = document.createElement('tr');
-          header = document.createElement('th');
+        const row = document.createElement('tr');
+        {
+          const header = document.createElement('th');
           header.className = "text sortcol";
           header.textContent = "Library";
           row.appendChild(header);
-          for(benchmark in testData) {
-            header = document.createElement('th');
+          for(const benchmark of Object.keys(testData)) {
+            const header = document.createElement('th');
             header.className = "number sortcol";
             header.textContent = benchmark;
             row.appendChild(header);
           };
-          header = document.createElement('th');
+        }
+        {
+          const header = document.createElement('th');
           header.className = "number sortcol sortfirstdesc";
           header.textContent = "Average";
           row.appendChild(header);
-          data_table_head.deleteRow(0)
+          data_table_head.deleteRow(0);
           data_table_head.appendChild(row);
-          for (i = 0; i < libraries.length; i++) {
-            row = document.createElement('tr');
+          for (let i = 0; i < libraries.length; i++) {
+            const row = document.createElement('tr');
             row.id = libraries[i] + '_row';
-            data = document.createElement('td');
-            data.style.backgroundColor = colors[i];
-            data.style.color = '#ffffff';
-            data.style.fontWeight = 'normal';
-            data.style.fontFamily = 'Arial Black';
-            data.textContent = libraries[i];
-            row.appendChild(data);
-            for(benchmark in testData) {
-              data = document.createElement('td');
-              data.id = benchmark + '_' + library_to_id(libraries[i]) + '_data'
+            {
+              const data = document.createElement('td');
+              data.style.backgroundColor = colors[i];
+              data.style.color = '#ffffff';
+              data.style.fontWeight = 'normal';
+              data.style.fontFamily = 'Arial Black';
+              data.textContent = libraries[i];
+              row.appendChild(data);
+              for(const benchmark of Object.keys(testData)) {
+                const data = document.createElement('td');
+                data.id = `${benchmark}_${library_to_id(libraries[i])}_data`;
+                data.textContent = "";
+                row.appendChild(data);
+              };
+            }
+            {
+              const data = document.createElement('td');
+              data.id = library_to_id(libraries[i]) + '_ave__data'
               data.textContent = "";
               row.appendChild(data);
-            };
-            data = document.createElement('td');
-            data.id = library_to_id(libraries[i]) + '_ave__data'
-            data.textContent = "";
-            row.appendChild(data);
-            data_table_body.appendChild(row);
-         };
+              data_table_body.appendChild(row);
+            }
+          };
+        }
       };
 
       function updateTableData() {
-        var row, data, value, totals = {}, counts = {};
-        for(var benchmark in testData) {
-          var bestLibraries;
-          var bestIPS = -1;
-          for (var library in testData[benchmark]) {
-            var id = benchmark + '_' + library_to_id(library) + '_data';
-            data = document.getElementById(id);
-            value = testData[benchmark][library].avg;
+        const totals = {};
+        const counts = {};
+        for(const benchmark of Object.keys(testData)) {
+          let bestLibraries;
+          let bestIPS = -1;
+          for (const library of Object.keys(testData[benchmark])) {
+            const id = `${benchmark}_${library_to_id(library)}_data`;
+            const data = document.getElementById(id);
+            let value = testData[benchmark][library].avg;
             if (typeof(value) === "number") {
               value = value / 1000000;
               data.textContent = sprintf("%2.2f", value);
@@ -442,27 +584,21 @@
             }
           }
           if (bestIPS > 0) {
-            for (var i = 0; i < bestLibraries.length; ++i) {
-              var library = bestLibraries[i];
-              data = document.getElementById(benchmark + '_' + library_to_id(library) + '_data');
+            for (const library of bestLibraries) {
+              const data = document.getElementById(`${benchmark}_${library_to_id(library)}_data`);
               data.style.backgroundColor = '#acf';
             }
           }
         }
-        for (var library in totals) {
+        for (const library of Object.keys(totals)) {
           if (counts[library]) {
-            data = document.getElementById(library_to_id(library) + '_ave__data');
+            const data = document.getElementById(`${library_to_id(library)}_ave__data`);
             data.textContent = sprintf("%2.2f", totals[library] / counts[library]);
           }
         }
         SortableTable.load();
       };
-
-    </script>
-    <script type="text/javascript">
-     window.onload=function() {
-       testMain();
-      }
+      testMain();
     </script>
   </body>
 </html>

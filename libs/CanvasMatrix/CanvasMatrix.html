@@ -6,14 +6,14 @@
     <title>Matrix Benchmark</title>
 
     <!-- Common Utilities -->
-    <script type="text/javascript" src="../../js/rand.js"></script>
+    <script src="../../js/rand.js"></script>
 
     <!-- Matrix Libraries -->
-    <script type="text/javascript" src="CanvasMatrix.js"></script>
+    <script src="CanvasMatrix.js"></script>
 
     <!-- Benchmarking utilities -->
-    <script type="text/javascript" src="../../js/test-helper.js"></script>
-    <script type="text/javascript">
+    <script src="../../js/test-helper.js"></script>
+    <script>
 
       window.onload = TestHelper.main;
 
@@ -62,7 +62,7 @@
                 m1.multLeft(m2);
               }
             }
-            return {time: performance.now()-start, loopCount: loopCount, result: m1};
+            return {time: performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Translation':
@@ -78,7 +78,7 @@
               }
             }
             m1.multRight(m2);
-            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Scaling':
@@ -94,7 +94,7 @@
               }
             }
             m1.multRight(m2);
-            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Rotation (Arbitrary axis)':
@@ -110,7 +110,7 @@
               }
             }
             m1.multRight(m2);
-            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Rotation (X axis)':
@@ -126,7 +126,7 @@
               }
             }
             m1.multRight(m2);
-            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Transpose':
@@ -140,7 +140,7 @@
                 m1.transpose();
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Inverse':
@@ -155,7 +155,7 @@
                 m1.invert();
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Inverse 3x3':

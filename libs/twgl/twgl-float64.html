@@ -6,14 +6,14 @@
     <title>Matrix Benchmark</title>
 
     <!-- Common Utilities -->
-    <script type="text/javascript" src="../../js/rand.js"></script>
+    <script src="../../js/rand.js"></script>
 
     <!-- Matrix Libraries -->
-    <script type="text/javascript" src="twgl-full.min.js"></script>
+    <script src="twgl-full.min.js"></script>
 
     <!-- Benchmarking utilities -->
-    <script type="text/javascript" src="../../js/test-helper.js"></script>
-    <script type="text/javascript">
+    <script src="../../js/test-helper.js"></script>
+    <script>
       var m4 = twgl.m4;
       var v3 = twgl.v3;
       m4.setDefaultType(Float64Array);
@@ -42,7 +42,7 @@
                 m4.multiply(m1, m2, m1);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Translation':
@@ -57,7 +57,7 @@
                 m4.translate(m1, v1, m1);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Scaling':
@@ -72,7 +72,7 @@
                 m4.scale(m1, v1, m1);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Rotation (Arbitrary axis)':
@@ -89,7 +89,7 @@
                 m4.axisRotate(m1, v1, a, m1);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Rotation (X axis)':
@@ -104,7 +104,7 @@
                 m4.rotateX(m1, a, m1);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Transpose':
@@ -118,7 +118,7 @@
                 m4.transpose(m1, m1);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Inverse':
@@ -132,7 +132,7 @@
                 m4.inverse(m1, m1);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Inverse 3x3':
@@ -150,7 +150,7 @@
                 m4.transformPoint(m1, v1, v1);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: v1};
+            return {time:performance.now() - start, loopCount: loopCount, result: v1};
           }}
 
       };

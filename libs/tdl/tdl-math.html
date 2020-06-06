@@ -6,14 +6,14 @@
     <title>Matrix Benchmark</title>
 
     <!-- Common Utilities -->
-    <script type="text/javascript" src="../../js/rand.js"></script>
+    <script src="../../js/rand.js"></script>
 
     <!-- Matrix Libraries -->
-    <script type="text/javascript" src="tdl/base.js"></script>
+    <script src="tdl/base.js"></script>
 
     <!-- Benchmarking utilities -->
-    <script type="text/javascript" src="../../js/test-helper.js"></script>
-    <script type="text/javascript">
+    <script src="../../js/test-helper.js"></script>
+    <script>
       tdl.require('tdl.math');
 
       window.onload = TestHelper.main;
@@ -40,7 +40,7 @@
                 m1 = mat4.mul(m2, m1);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Translation':
@@ -56,7 +56,7 @@
                 mat4.translate(m1, v1);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Scaling':
@@ -72,7 +72,7 @@
                 mat4.scale(m1, v1);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Rotation (Arbitrary axis)':
@@ -89,7 +89,7 @@
                 mat4.axisRotate(m1, v1, a);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Rotation (X axis)':
@@ -105,7 +105,7 @@
                 mat4.rotateX(m1, a);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Transpose':
@@ -120,7 +120,7 @@
                 m1 = mat4.transpose(m1);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Inverse':
@@ -135,7 +135,7 @@
                 m1 = mat4.inverse(m1);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: m1};
+            return {time:performance.now() - start, loopCount: loopCount, result: m1};
           }},
 
         'Inverse 3x3':
@@ -152,7 +152,7 @@
             }
             var m2 = tdl.math.matrix4.identity();
             tdl.math.matrix4.setUpper3x3(m2, m1);
-            return {time:performance.now()-start, loopCount: loopCount, result: m2};
+            return {time:performance.now() - start, loopCount: loopCount, result: m2};
           }},
 
         'Vector Transformation':
@@ -168,7 +168,7 @@
                 v1 = mat4.transformPoint(m1, v1);
               }
             }
-            return {time:performance.now()-start, loopCount: loopCount, result: v1};
+            return {time:performance.now() - start, loopCount: loopCount, result: v1};
           }}
 
       };

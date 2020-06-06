@@ -520,7 +520,7 @@ if (!COMPILED && goog.ENABLE_DEBUG_LOADER) {
     if (goog.inHtmlDocument_()) {
       var doc = goog.global.document;
       doc.write(
-          '<script type="text/javascript" src="' + src + '"></' + 'script>');
+          '<script src="' + src + '"></' + 'script>');
       return true;
     } else {
       return false;
