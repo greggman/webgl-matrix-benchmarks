@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Matrix Benchmark</title>
+
+    <!-- Common Utilities -->
+    <script type="text/javascript" src="../../js/rand.js"></script>
+
+    <!-- Matrix Libraries -->
+    <script type="text/javascript" src="glm-gl-matrix.min.js"></script>
+
+    <!-- Benchmarking utilities -->
+    <script type="text/javascript" src="../../js/test-helper.js"></script>
+    <script type="text/javascript">
+
+      window.onload = TestHelper.main;
+
+      function glMatrixRandom() {
+        var m = glm.mat4();
+        var axis = glm.vec3(pseudoRandom(), pseudoRandom(), pseudoRandom());
+        axis = glm.normalize(axis);
+        m = glm.rotate(m, pseudoRandom(), axis);
+        m = glm.translate(m, glm.vec3(pseudoRandom(), pseudoRandom(), pseudoRandom()));
+        return m;
+      }
+
+      if (window.location.hash == "#native")
+        glMatrix.ARRAY_TYPE = Array;
+      if (window.location.hash == "#float64")
+        glMatrix.ARRAY_TYPE = Float64Array;
+
+      var tests = {
+        'Multiplication':
+          { test: function(count, maxCount, milliSeconds) {
+            var m1 = glMatrixRandom();
+            var m2 = glMatrixRandom();
+            var start = performance.now();
+            var loopCount = 0;
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
+              ++loopCount;
+              for (var i = 0; i < count; ++i) {
+                m1['*='](m2);
+              }
+            }
+            return {time: performance.now()-start, loopCount: loopCount, result: m1.array};
+          }},
+
+        'Translation':
+          { test: function(count, maxCount, milliSeconds) {
+            var m1 = glMatrixRandom();
+            var v1 = glm.vec3(1, 2, 3);
+            var start = performance.now();
+            var loopCount = 0;
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
+              ++loopCount;
+              for (var i = 0; i < count; ++i) {
+                m1 = glm.translate(m1, v1);
+              }
+            }
+            return {time:performance.now()-start, loopCount: loopCount, result: m1.array};
+          }},
+
+        'Scaling':
+          { test: function(count, maxCount, milliSeconds) {
+            var m1 = glMatrixRandom();
+            var v1 = glm.vec3(1, 2, 3);
+            var start = performance.now();
+            var loopCount = 0;
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
+              ++loopCount;
+              for (var i = 0; i < count; ++i) {
+                m1 = glm.scale(m1, v1);
+              }
+            }
+            return {time:performance.now()-start, loopCount: loopCount, result: m1.array};
+          }},
+
+        'Rotation (Arbitrary axis)':
+          { test: function(count, maxCount, milliSeconds) {
+            var m1 = glMatrixRandom();
+            var v1 = glm.vec3(1, 2, 3);
+            var a = Math.PI/2;
+            var start = performance.now();
+            var loopCount = 0;
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
+              ++loopCount;
+              for (var i = 0; i < count; ++i) {
+                m1 = glm.rotate(m1, a, v1);
+              }
+            }
+            return {time:performance.now()-start, loopCount: loopCount, result: m1.array};
+          }},
+
+        'Rotation (X axis)':
+          { test: function(count, maxCount, milliSeconds) {
+            var m1 = glMatrixRandom();
+            var a = Math.PI/2;
+            var axis = glm.vec3(1, 0, 0);
+            var start = performance.now();
+            var loopCount = 0;
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
+              ++loopCount;
+              for (var i = 0; i < count; ++i) {
+                m1 = glm.rotate(m1, a, axis);
+              }
+            }
+            return {time:performance.now()-start, loopCount: loopCount, result: m1.array};
+          }},
+
+        'Transpose':
+          { test: function(count, maxCount, milliSeconds) {
+            var m1 = glMatrixRandom();
+            var start = performance.now();
+            var loopCount = 0;
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
+              ++loopCount;
+              for (var i = 0; i < count; ++i) {
+                m1 = glm.transpose(m1);
+              }
+            }
+            return {time:performance.now()-start, loopCount: loopCount, result: m1.array};
+          }},
+
+        'Inverse':
+          { test: function(count, maxCount, milliSeconds) {
+            var m1 = glm.perspective(Math.PI/2, 0.5, 1, 1000);
+            var start = performance.now();
+            var loopCount = 0;
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
+              ++loopCount;
+              for (var i = 0; i < count; ++i) {
+                m1 = glm.inverse(m1);
+              }
+            }
+            return {time:performance.now()-start, loopCount: loopCount, result: m1.array};
+          }},
+
+        'Inverse 3x3':
+          { test: function(count, maxCount, milliSeconds) {
+            var m1 = glm.mat3(glMatrixRandom());
+            var start = performance.now();
+            var loopCount = 0;
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
+              ++loopCount;
+              for (var i = 0; i < count; ++i) {
+                m1 = glm.inverse(m1);
+              }
+            }
+            var m2 = glm.mat4(m1);
+            return {time:performance.now()-start, loopCount: loopCount, result: m2.array};
+          }},
+
+        'Vector Transformation':
+          { test: function(count, maxCount, milliSeconds) {
+            var m1 = glMatrixRandom();
+            var v1 = glm.vec3(1, 2, 3);
+            var start = performance.now();
+            var loopCount = 0;
+            // if there is a faster way I didn't see it
+            while (performance.now() - start < milliSeconds && loopCount != maxCount) {
+              ++loopCount;
+              for (var i = 0; i < count; ++i) {
+                var v4 = glm.vec4(v1, 1);
+                v4 = m1['*'](v4);
+                v1 = glm.vec3(v4['/'](v4.w));
+              }
+            }
+            return {time:performance.now()-start, loopCount: loopCount, result: v1.array};
+          }}
+
+      };
+
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
