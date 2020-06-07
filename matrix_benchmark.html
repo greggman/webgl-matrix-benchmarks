@@ -23,9 +23,8 @@
     <!-- Benchmarking utilities -->
     <script>
 
-      testData = {};
-      testSets = [];
-      testSetIndex = 0;
+      const testData = {};
+      const testSets = [];
 
       function debuggerLog(obj) {
         if (window.console && window.console.log) {
@@ -197,47 +196,44 @@
         ]
       };
 
-      function runTestSet(name, tests) {
-        setTimeout(function() {
-          logTitle(name);
-          const results = [];
-          const expected = testExpectations[name];
-          for(const test of tests) {
-            const result = preTest(test.library, test.test, test.testInfo);
-            results.push(result);
-            const library = test.library;
-            const data = TestHelper.test(library, test.test, testData[name]);
-            testData[name][library] = data;
-            if (data.avg === null) {
-              log(`<i>${library} Unsupported</i>`);
-            } else {
-              log(`<i>${library}</i> - Avg: <b>${data.avg} iterations per second</b>, Min: ${data.min} iterations per second, Max: ${data.max} iterations per second`);
-            }
-          }
+      const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-          // Compare the results to make sure we are testing the same thing
-          for (let i = 0; i < results.length; ++i) {
-            if (results[i] && !Compare(expected, results[i])) {
-              debuggerLog(name);
-              debuggerLog(tests[i].library);
-              debuggerLog(expected);
-              debuggerLog(results[i]);
-              log(`<strong>${tests[i].library}: results do NOT match!!!</strong>`);
-              testData[name][tests[i].library].bad = true;
-            }
+      async function runTestSet(name, tests) {
+        logTitle(name);
+        const results = [];
+        const expected = testExpectations[name];
+        for(const test of tests) {
+          const result = preTest(test.library, test.test, test.testInfo);
+          results.push(result);
+          const library = test.library;
+          const data = TestHelper.test(library, test.test, testData[name]);
+          testData[name][library] = data;
+          if (data.avg === null) {
+            log(`<i>${library} Unsupported</i>`);
+          } else {
+            log(`<i>${library}</i> - Avg: <b>${data.avg} iterations per second</b>, Min: ${data.min} iterations per second, Max: ${data.max} iterations per second`);
           }
-          plotBenchmarks();
-          updateTableData();
-          setTimeout(function() {
-            runNextTest();
-          }, 100);
-        }, 1);
+        }
+
+        // Compare the results to make sure we are testing the same thing
+        for (let i = 0; i < results.length; ++i) {
+          if (results[i] && !Compare(expected, results[i])) {
+            debuggerLog(name);
+            debuggerLog(tests[i].library);
+            debuggerLog(expected);
+            debuggerLog(results[i]);
+            log(`<strong>${tests[i].library}: results do NOT match!!!</strong>`);
+            testData[name][tests[i].library].bad = true;
+          }
+        }
+        plotBenchmarks();
+        updateTableData();
       }
 
-      function runNextTest() {
-        if (testSetIndex < testSets.length) {
-          const {name, tests} = testSets[testSetIndex++];
-          runTestSet(name, tests);
+      async function runTests() {
+        for (const {name, tests} of testSets) {
+          await runTestSet(name, tests);
+          await wait();
         }
       }
 
@@ -355,17 +351,18 @@
         {name: 'twgl-math',         url: 'libs/twgl-math/twgl-math.html'       },
         {name: 'twgl-math-native',  url: 'libs/twgl-math/twgl-math.html#native'},
         {name: 'twgl',              url: 'libs/twgl/twgl.html'                 },
-        {name: 'twgl-alloc',        url: 'libs/twgl/twgl-alloc.html'           },
+        {name: 't-alloc',           url: 'libs/twgl/twgl-alloc.html'           },
         {name: 'twgl-native',       url: 'libs/twgl/twgl-native.html'          },
         {name: 'twgl-float64',      url: 'libs/twgl/twgl-float64.html'         },
         {name: 'Sylvester',         url: 'libs/Sylvester/Sylvester.html'       },
       ];
+       // t-alloc is just to show how much slower it is to allocate new objects
+       // for each result rather than compute them in place.
+
       const query = Object.fromEntries(new URLSearchParams(window.location.search).entries());
       const urlTests = new Set(query.tests
             ? query.tests.split(',').map(s => s.toLowerCase())
-            : allTestURLs.map(t => t.name.toLowerCase()).filter(name => name !== 'twgl-alloc'));
-       // twgl-alloc is just to show how much slower it is to allocate new objects
-       // for each result rather than compute them in place.
+            : allTestURLs.map(t => t.name.toLowerCase()));
 
       const testURLs = (allTestURLs.filter((t) => urlTests.has(t.name.toLowerCase())))
           .sort((b, a) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0);
@@ -415,30 +412,22 @@
         }
         plotBenchmarks();
         createTableData();
-        setTimeout(runNextTest, 100);
+        runTests();
       }
 
-      const colors = [
-        '#ff0000',
-        '#4444ff',
-        '#00dd00',
-        '#cc00cc',
-        '#ee6600',
-        '#00ccbb',
-        '#990000',
-        '#110077',
-        '#118800',
-        '#770099',
-        '#aa4400',
-        '#008877',
-        '#880077',
-        '#887700',
-        '#578800',
-        'pink',
-        'lavender',
-        'yellow',
-        'lightblue',
-      ];
+      function reverseBits(v, bits) {
+        let n = 0;
+        for (let i = 0; i < bits; ++i) {
+          n = (n << 1) | ((v >> i) & 1);
+        }
+        return n;
+      }
+
+      const colors = []
+      for (let i = 0; i < 32; ++i) {
+        const h = (reverseBits(i & 0x7, 3) * 2 + (i & 0x8 ? 1 : 0)) / 16;
+        colors.push(`hsl(${h * 360 | 0}, ${(i & 8) ? 60 : 90}%, ${(i & 16) ? 20 : 45}%)`);
+      }
 
       function plotBenchmarks() {
           const datasets = [];
