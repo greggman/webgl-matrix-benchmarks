@@ -360,13 +360,19 @@
        // for each result rather than compute them in place.
 
       const query = Object.fromEntries(new URLSearchParams(window.location.search).entries());
-      const urlTests = new Set(query.tests
-            ? query.tests.split(',').map(s => s.toLowerCase())
-            : allTestURLs.map(t => t.name.toLowerCase()));
+      const libraryFilter = query.tests || query.libraries;
+      const testFilter = query.benchmarks;
+      const urlTests = new Set(libraryFilter
+          ? libraryFilter.split(',')
+          : allTestURLs.map(t => t.name));
+      const urlTestRE = new RegExp([...urlTests].join('|'), 'i');
+      const testRE = testFilter
+         ? new RegExp(testFilter.replace(/,/g, '|'), 'i')
+         : {test: _ => true};
 
-      const testURLs = (allTestURLs.filter((t) => urlTests.has(t.name.toLowerCase())))
+      const testURLs = (allTestURLs.filter(t => urlTestRE.test(t.name)))
           .sort((b, a) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0);
-      const libraries = testURLs.map(function(t) { return t.name;});
+      const libraries = testURLs.map(t => t.name);
 
       let waiting = 1;
 
@@ -396,6 +402,7 @@
           const tests = testInfo.iframe.contentWindow.tests;
           for (const testName of Object.keys(tests)) {
             if (testName === 'Inverse 3x3') continue;
+            if (!testRE.test(testName)) continue;
             if (!sets[testName]) {
               sets[testName] = [];
             }
@@ -493,55 +500,73 @@
         return library.toLowerCase().replace(/\W/g, '_');
       }
 
+      function $e(tag, attrs = {}, children  = []) { 
+        const elem = document.createElement(tag);
+        for (const [key, value] of Object.entries(attrs)) {
+          if (typeof value === 'object') {
+            for (const [k, v] of Object.entries(value)) {
+              try {
+              elem[key][k] = v;
+              } catch (e) {
+                debugger;  // eslint-disable-line no-debugger
+              }
+            }
+          } else if (elem[key] === undefined) {
+            elem.setAttribute(key, value);
+          } else {
+            elem[key] = value;
+          }
+        }
+        for (const child of children) {
+          elem.appendChild(child);
+        }
+        return elem;
+      }
+
       function createTableData() {
-        const row = document.createElement('tr');
+        data_table_head.deleteRow(0);
+        data_table_head.appendChild($e('tr', {}, [
+          //$e('th'),
+          $e('th', {
+            className: "text sortcol",
+            textContent: "Library",
+          }),
+          ...Object.keys(testData).map(benchmark => $e('th', {
+            className: "number sortcol",
+            textContent: benchmark,
+          })),
+          $e('th', {
+            className: "number sortcol sortfirstdesc",
+            textContent: "Average",
+          }),
+        ]));
         {
-          const header = document.createElement('th');
-          header.className = "text sortcol";
-          header.textContent = "Library";
-          row.appendChild(header);
-          for(const benchmark of Object.keys(testData)) {
-            const header = document.createElement('th');
-            header.className = "number sortcol";
-            header.textContent = benchmark;
-            row.appendChild(header);
-          };
-        }
-        {
-          const header = document.createElement('th');
-          header.className = "number sortcol sortfirstdesc";
-          header.textContent = "Average";
-          row.appendChild(header);
-          data_table_head.deleteRow(0);
-          data_table_head.appendChild(row);
           for (let i = 0; i < libraries.length; i++) {
-            const row = document.createElement('tr');
-            row.id = libraries[i] + '_row';
-            {
-              const data = document.createElement('td');
-              data.style.backgroundColor = colors[i];
-              data.style.color = '#ffffff';
-              data.style.fontWeight = 'normal';
-              data.style.fontFamily = 'Arial Black';
-              data.textContent = libraries[i];
-              row.appendChild(data);
-              for(const benchmark of Object.keys(testData)) {
-                const data = document.createElement('td');
-                data.id = `${benchmark}_${library_to_id(libraries[i])}_data`;
-                data.textContent = "";
-                row.appendChild(data);
-              };
-            }
-            {
-              const data = document.createElement('td');
-              data.id = library_to_id(libraries[i]) + '_ave__data'
-              data.textContent = "";
-              row.appendChild(data);
-              data_table_body.appendChild(row);
-            }
+            data_table_body.appendChild($e('tr', {
+              id: `${libraries[i]}_row`,
+            }, [
+              //$e('td', {}, [
+              //  $e('input', {type: 'checkbox'}),
+              //]),
+              $e('td', {
+                style: {
+                  backgroundColor: colors[i],
+                  color: '#ffffff',
+                  fontWeight: 'normal',
+                  fontFamily: 'Arial Black',
+                },
+                textContent: libraries[i],
+              }),
+              ...Object.keys(testData).map(benchmark => $e('td', {
+                id: `${benchmark}_${library_to_id(libraries[i])}_data`,
+              })),
+              $e('td', {
+                id: `${library_to_id(libraries[i])}_ave__data`,
+              }),
+            ]));
           };
         }
-      };
+      }
 
       function updateTableData() {
         const totals = {};

@@ -13,11 +13,21 @@ test twgl (float32) vs twgl-native vs twgl-float64
 
 https://greggman.github.io/webgl-matrix-benchmarks/matrix_benchmark.html?tests=twgl,twgl-native,twgl-float64
 
-Note: an observation ... whether or not a particlar JavaScript engine optimizes something seems to be
+test all glMatrix and twgl tests
+
+https://greggman.github.io/webgl-matrix-benchmarks/matrix_benchmark.html?tests=twgl,glMatrix
+
+You can also limit test benchmarks with `?benchmark=name,name,name` for example
+
+test only matrix multiplication
+
+https://greggman.github.io/webgl-matrix-benchmarks/matrix_benchmark.html?benchmarks=mult
+
+Note: an observation ... whether or not a particular JavaScript engine optimizes something seems to be
 context dependent. I've seen one library outperform another even when the code is **EXACTLY** the same.
 In trying to track down why one was faster than another I copy the code (say matrix multiply) from
 one library to the other and yet still found a difference in execution larger than noise. In general though
-execution is consistant across runs
+execution is consistent across runs
 
 This work is based on Brandon's work as of this commit:
 
